@@ -1,2 +1,3 @@
 # ktor-demo-1
-Demonstartion for kjson-ktor
+
+Demonstration for kjson-ktor
