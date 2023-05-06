@@ -15,6 +15,8 @@ import io.kjson.demo1.ports.provides.Properties
 import io.kjson.demo1.ports.requires.Config
 import io.kjson.demo1.ports.requires.PartyClient
 import io.kjson.ktor.kjson
+import io.kjson.mustache.Template
+import io.kjson.mustache.parser.Parser
 import net.pwall.log.getLogger
 
 object AppConfig : Config {
@@ -27,6 +29,10 @@ object AppConfig : Config {
     override val partyClient: PartyClient = PartyClientImpl(ClientFactory.createHttpClient())
 
     override val customerAccountService: CustomerAccountService = CustomerAccountServiceImpl(AppConfig)
+
+    private val mustacheParser = Parser(AppConfig::class.java.getResource("/templates") ?:
+            throw RuntimeException("Templates not found"))
+    override val mustacheTemplate: Template = mustacheParser.parseByName("customers")
 
     val log = getLogger()
 

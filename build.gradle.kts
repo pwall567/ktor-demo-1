@@ -28,6 +28,7 @@ tasks {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("io.kjson:kjson-ktor:0.1")
+    implementation("io.kjson:mustache-k:1.4")
     implementation("io.ktor:ktor-server-jvm:${ktorVersion}")
     implementation("io.ktor:ktor-server-core-jvm:${ktorVersion}")
     implementation("io.ktor:ktor-server-host-common-jvm:${ktorVersion}")
