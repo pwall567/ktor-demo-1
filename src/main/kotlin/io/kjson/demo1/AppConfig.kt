@@ -30,8 +30,10 @@ object AppConfig : Config {
 
     override val customerAccountService: CustomerAccountService = CustomerAccountServiceImpl(AppConfig)
 
-    private val mustacheParser = Parser(AppConfig::class.java.getResource("/templates") ?:
-            throw RuntimeException("Templates not found"))
+    private val resourceURL = AppConfig::class.java.getResource("/templates") ?:
+            throw RuntimeException("Templates not found")
+
+    override val mustacheParser = Parser(resourceURL)
     override val mustacheTemplate: Template = mustacheParser.parseByName("customers")
 
     val log = getLogger()

@@ -10,7 +10,9 @@ object ClientFactory {
 
     fun createHttpClient() = HttpClient(CIO) {
         install(ContentNegotiation) {
-            kjson()
+            kjson {
+                streamOutput = true
+            }
         }
     }
 

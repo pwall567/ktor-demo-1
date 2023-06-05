@@ -18,6 +18,8 @@ h1 {
     font-size: 16pt;
     padding: 20px;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
 }
 .total {
     font-size: 16pt;
@@ -29,7 +31,13 @@ h1 {
     <h1>
       List of Customers
     </h1>
-    {{#list}}<div class="item">Customer: {{id}} Name: {{name}}</div>{{/list}}
-    <div class="total">Total customers: {{count}}</div>
+    {{#list}}
+      <div class="item">
+        <span>Customer: <b>{{id}}</b></span>
+        <span>Name: <b>{{name}}</b></span>
+        <span>Balance: <b>${{balance}}</b></span>
+      </div>
+    {{/list}}
+    <div class="total">Total: {{count}}</div>
   </body>
 </html>

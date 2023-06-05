@@ -1,8 +1,11 @@
 package io.kjson.demo1.adapters.requires
 
+import kotlinx.coroutines.flow.Flow
+
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 
 import io.kjson.demo1.ports.requires.Party
@@ -31,6 +34,17 @@ class PartyClientImpl(
 
     override suspend fun getFlow(ids: String, consumer: suspend (Party) -> Unit) {
         client.receiveStreamJSON<Party>("$PARTY_SERVER_BASE_URI/party/flow/$ids") {
+            log.info { "Received ${it.id}" }
+            consumer(it)
+        }
+    }
+
+    override suspend fun postFlow(ids: Flow<String>, consumer: suspend (Party) -> Unit) {
+        client.receiveStreamJSON<Party>(
+            urlString = "$PARTY_SERVER_BASE_URI/party/post",
+            method = HttpMethod.Post,
+            body = ids,
+        ) {
             log.info { "Received ${it.id}" }
             consumer(it)
         }

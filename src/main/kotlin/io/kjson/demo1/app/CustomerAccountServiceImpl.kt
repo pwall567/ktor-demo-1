@@ -1,5 +1,8 @@
 package io.kjson.demo1.app
 
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
+
 import java.math.BigDecimal
 
 import io.kjson.demo1.ports.provides.CustomerAccount
@@ -26,6 +29,18 @@ class CustomerAccountServiceImpl(private val config: Config) : CustomerAccountSe
         }
     }
 
+    override suspend fun postAccountFlow(ids: List<String>, consumer: suspend (CustomerAccount) -> Unit) {
+        val flow = flow {
+            for (id in ids) {
+                delay(3000)
+                emit(id)
+            }
+        }
+        config.partyClient.postFlow(flow) {
+            consumer(it.toCustomerAccount())
+        }
+    }
+
     companion object {
 
         fun Party.toCustomerAccount(): CustomerAccount = CustomerAccount(
@@ -33,7 +48,14 @@ class CustomerAccountServiceImpl(private val config: Config) : CustomerAccountSe
             name = name,
             reference = reference,
             creationDate = creationDate,
-            balance = BigDecimal.ZERO,
+            balance = balances[id] ?: BigDecimal.ZERO,
+        )
+
+        private val balances = mapOf(
+            "1" to BigDecimal("1234.00"),
+            "2" to BigDecimal("22222.34"),
+            "3" to BigDecimal("0.00"),
+            "4" to BigDecimal("5.10"),
         )
 
     }
