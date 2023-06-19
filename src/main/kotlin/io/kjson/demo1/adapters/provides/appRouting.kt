@@ -28,6 +28,12 @@ fun Routing.appRouting(config: Config) {
         call.respond(account)
     }
 
+    get("/customer/list/{ids}") {
+        val ids = call.parameters["ids"] ?: throw IllegalArgumentException("No ids")
+        log.info { "GET /customer/list/$ids" }
+        call.respond(config.customerAccountService.getAccountList(ids.split('.')))
+    }
+
     get("/customer/channel/{ids}") {
         val ids = call.parameters["ids"] ?: throw IllegalArgumentException("No ids")
         log.info { "GET /customer/channel/$ids" }

@@ -7,7 +7,7 @@ val kotlinVersion = "1.7.21"
 val ktorVersion = "2.2.4"
 
 plugins {
-    kotlin("jvm") version("1.7.21")
+    kotlin("jvm") version "1.7.21"
     application
 }
 

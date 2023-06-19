@@ -17,6 +17,11 @@ class CustomerAccountServiceImpl(private val config: Config) : CustomerAccountSe
         return party.toCustomerAccount()
     }
 
+    override suspend fun getAccountList(ids: List<String>): List<CustomerAccount> {
+        val list = config.partyClient.getList(ids.joinToString("."))
+        return list.map { it.toCustomerAccount() }
+    }
+
     override suspend fun getAccounts(ids: List<String>, consumer: suspend (CustomerAccount) -> Unit) {
         config.partyClient.getStream(ids.joinToString(".")) {
             consumer(it.toCustomerAccount())

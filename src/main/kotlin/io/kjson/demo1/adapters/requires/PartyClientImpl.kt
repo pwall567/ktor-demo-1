@@ -25,6 +25,14 @@ class PartyClientImpl(
         }
     }
 
+    override suspend fun getList(ids: String): List<Party> {
+        val response = client.get("$PARTY_SERVER_BASE_URI/party/list/$ids")
+        when (response.status) {
+            HttpStatusCode.OK -> return response.body()
+            else -> throw IllegalStateException("Something went wrong")
+        }
+    }
+
     override suspend fun getStream(ids: String, consumer: suspend (Party) -> Unit) {
         client.receiveStreamJSON<Party>("$PARTY_SERVER_BASE_URI/party/channel/$ids") {
             log.info { "Received ${it.id}" }
