@@ -34,6 +34,12 @@ class CustomerAccountServiceImpl(private val config: Config) : CustomerAccountSe
         }
     }
 
+    override suspend fun getAccountFlowLines(ids: List<String>, consumer: suspend (CustomerAccount) -> Unit) {
+        config.partyClient.getFlowLines(ids.joinToString(".")) {
+            consumer(it.toCustomerAccount())
+        }
+    }
+
     override suspend fun postAccountFlow(ids: List<String>, consumer: suspend (CustomerAccount) -> Unit) {
         val flow = flow {
             for (id in ids) {

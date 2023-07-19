@@ -5,5 +5,6 @@ interface CustomerAccountService {
     suspend fun getAccountList(ids: List<String>): List<CustomerAccount>
     suspend fun getAccounts(ids: List<String>, consumer: suspend (CustomerAccount) -> Unit)
     suspend fun getAccountFlow(ids: List<String>, consumer: suspend (CustomerAccount) -> Unit)
+    suspend fun getAccountFlowLines(ids: List<String>, consumer: suspend (CustomerAccount) -> Unit)
     suspend fun postAccountFlow(ids: List<String>, consumer: suspend (CustomerAccount) -> Unit)
 }

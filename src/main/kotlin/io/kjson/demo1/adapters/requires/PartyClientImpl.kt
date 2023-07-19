@@ -11,6 +11,7 @@ import io.ktor.http.HttpStatusCode
 import io.kjson.demo1.ports.requires.Party
 import io.kjson.demo1.ports.requires.PartyClient
 import io.kjson.ktor.receiveStreamJSON
+import io.kjson.ktor.receiveStreamJSONLines
 import net.pwall.log.getLogger
 
 class PartyClientImpl(
@@ -42,6 +43,13 @@ class PartyClientImpl(
 
     override suspend fun getFlow(ids: String, consumer: suspend (Party) -> Unit) {
         client.receiveStreamJSON<Party>("$PARTY_SERVER_BASE_URI/party/flow/$ids") {
+            log.info { "Received ${it.id}" }
+            consumer(it)
+        }
+    }
+
+    override suspend fun getFlowLines(ids: String, consumer: suspend (Party) -> Unit) {
+        client.receiveStreamJSONLines<Party>("$PARTY_SERVER_BASE_URI/party/lines/$ids") {
             log.info { "Received ${it.id}" }
             consumer(it)
         }

@@ -72,6 +72,22 @@ fun Routing.appRouting(config: Config) {
         }
     }
 
+    get("/display-lines/{ids}") {
+        val ids = call.parameters["ids"] ?: throw IllegalArgumentException("No ids")
+        log.info { "GET /display-lines/$ids" }
+        val count = Counter(units = "customer")
+        val flow = flow {
+            config.customerAccountService.getAccountFlowLines(ids.split('.')) {
+                emit(it)
+                count.increment()
+            }
+        }
+        val mustacheContext = mapOf("list" to flow, "count" to count)
+        call.respondStream {
+            config.mustacheTemplate.coRender(mustacheContext, this)
+        }
+    }
+
     get("/display-post/{ids}") {
         val ids = call.parameters["ids"] ?: throw IllegalArgumentException("No ids")
         log.info { "GET /display-post/$ids" }
