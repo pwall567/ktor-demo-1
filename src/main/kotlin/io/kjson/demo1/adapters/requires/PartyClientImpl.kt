@@ -8,11 +8,12 @@ import io.ktor.client.request.get
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 
+import io.kstuff.log.getLogger
+
 import io.kjson.demo1.ports.requires.Party
 import io.kjson.demo1.ports.requires.PartyClient
 import io.kjson.ktor.receiveStreamJSON
 import io.kjson.ktor.receiveStreamJSONLines
-import net.pwall.log.getLogger
 
 class PartyClientImpl(
     private val client: HttpClient,
